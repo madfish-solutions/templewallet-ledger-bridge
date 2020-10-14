@@ -21,8 +21,6 @@
   },
   "homepage": "https://github.com/madfish-solutions/thanoswallet-ledger-bridge#readme",
   "scripts": {
-    "release": "npm publish",
-    "prerelease": "npm run build",
     "dev": "microbundle watch",
     "build": "run-s build:*",
     "build:tsc": "tsc --module commonjs",
@@ -31,10 +29,10 @@
     "build:iframe-tinify": "terser --compress --mangle -o dist/iframe/bundle.js -- dist/iframe/bundle.js"
   },
   "dependencies": {
-    "@ledgerhq/hw-transport": "^5.26.0",
-    "@ledgerhq/hw-transport-u2f": "^5.26.0"
+    "@ledgerhq/hw-transport": "^5.26.0"
   },
   "devDependencies": {
+    "@ledgerhq/hw-transport-u2f": "^5.26.0",
     "@types/ledgerhq__hw-transport-u2f": "^4.21.2",
     "browserify": "^17.0.0",
     "microbundle": "^0.12.4",
