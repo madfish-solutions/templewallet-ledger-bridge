@@ -1,0 +1,19 @@
+import U2FTransport from "@ledgerhq/hw-transport-u2f";
+
+export async function exchange(
+  apdu: string,
+  scrambleKey?: string,
+  exchangeTimeout?: number
+) {
+  const t = await gotOrCreateTransport();
+  if (exchangeTimeout) t.setExchangeTimeout(exchangeTimeout);
+  if (scrambleKey) t.setScrambleKey(scrambleKey);
+  const resultBuf = await t.exchange(Buffer.from(apdu));
+  return resultBuf.toString();
+}
+
+let transport: U2FTransport;
+async function gotOrCreateTransport() {
+  if (!transport) transport = await U2FTransport.create();
+  return transport;
+}
