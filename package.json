@@ -29,7 +29,8 @@
     "build:iframe-tinify": "terser --compress --mangle -o dist/iframe/bundle.js -- dist/iframe/bundle.js"
   },
   "dependencies": {
-    "@ledgerhq/hw-transport": "^5.26.0"
+    "@ledgerhq/hw-transport": "^5.26.0",
+    "@types/ledgerhq__hw-transport": "^4.21.3"
   },
   "devDependencies": {
     "@ledgerhq/hw-transport-u2f": "^5.26.0",
