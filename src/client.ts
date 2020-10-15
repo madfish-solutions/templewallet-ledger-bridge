@@ -22,7 +22,8 @@ export class LedgerThanosBridgeTransport extends Transport {
     };
   }
 
-  static async open(bridgeUrl: string) {
+  static async open() {
+    const bridgeUrl = "https://thanoswallet.com/ledger-bridge";
     const iframe = document.createElement("iframe");
     iframe.src = bridgeUrl;
     document.head.appendChild(iframe);
