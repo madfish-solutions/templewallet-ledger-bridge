@@ -5,12 +5,28 @@ import {
   BridgeResponse,
 } from "./types";
 
-export class TransportThanosBridge extends Transport {
+export class LedgerThanosBridgeTransport extends Transport {
+  static async isSupported() {
+    return true;
+  }
+
+  // this transport is not discoverable
+  static async list() {
+    return [];
+  }
+
+  // this transport is not discoverable
+  static listen() {
+    return {
+      unsubscribe: () => {},
+    };
+  }
+
   static async open(bridgeUrl: string) {
     const iframe = document.createElement("iframe");
     iframe.src = bridgeUrl;
     document.head.appendChild(iframe);
-    return new TransportThanosBridge(iframe, bridgeUrl);
+    return new LedgerThanosBridgeTransport(iframe, bridgeUrl);
   }
 
   scrambleKey?: Buffer;
