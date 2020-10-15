@@ -3,20 +3,31 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TransportThanosBridge = void 0;
+exports.LedgerThanosBridgeTransport = void 0;
 const hw_transport_1 = __importDefault(require("@ledgerhq/hw-transport"));
 const types_1 = require("./types");
-class TransportThanosBridge extends hw_transport_1.default {
+class LedgerThanosBridgeTransport extends hw_transport_1.default {
     constructor(iframe, bridgeUrl) {
         super();
         this.iframe = iframe;
         this.bridgeUrl = bridgeUrl;
     }
+    static async isSupported() {
+        return true;
+    }
+    static async list() {
+        return [];
+    }
+    static listen() {
+        return {
+            unsubscribe: () => { },
+        };
+    }
     static async open(bridgeUrl) {
         const iframe = document.createElement("iframe");
         iframe.src = bridgeUrl;
         document.head.appendChild(iframe);
-        return new TransportThanosBridge(iframe, bridgeUrl);
+        return new LedgerThanosBridgeTransport(iframe, bridgeUrl);
     }
     exchange(apdu) {
         return new Promise((resolve, reject) => {
@@ -60,5 +71,5 @@ class TransportThanosBridge extends hw_transport_1.default {
         return tmp.join("/");
     }
 }
-exports.TransportThanosBridge = TransportThanosBridge;
+exports.LedgerThanosBridgeTransport = LedgerThanosBridgeTransport;
 //# sourceMappingURL=client.js.map
