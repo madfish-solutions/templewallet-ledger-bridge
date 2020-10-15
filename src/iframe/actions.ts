@@ -8,8 +8,8 @@ export async function exchange(
   const t = await gotOrCreateTransport();
   if (exchangeTimeout) t.setExchangeTimeout(exchangeTimeout);
   if (scrambleKey) t.setScrambleKey(scrambleKey);
-  const resultBuf = await t.exchange(Buffer.from(apdu));
-  return resultBuf.toString();
+  const resultBuf = await t.exchange(Buffer.from(apdu, "hex"));
+  return resultBuf.toString("hex");
 }
 
 let transport: U2FTransport;

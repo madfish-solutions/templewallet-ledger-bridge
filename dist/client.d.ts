@@ -9,7 +9,7 @@ export declare class LedgerThanosBridgeTransport extends Transport {
     static listen(): {
         unsubscribe: () => void;
     };
-    static open(bridgeUrl: string): Promise<LedgerThanosBridgeTransport>;
+    static open(): Promise<LedgerThanosBridgeTransport>;
     scrambleKey?: Buffer;
     unwrap?: boolean;
     constructor(iframe: HTMLIFrameElement, bridgeUrl: string);

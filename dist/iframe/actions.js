@@ -11,8 +11,8 @@ async function exchange(apdu, scrambleKey, exchangeTimeout) {
         t.setExchangeTimeout(exchangeTimeout);
     if (scrambleKey)
         t.setScrambleKey(scrambleKey);
-    const resultBuf = await t.exchange(Buffer.from(apdu));
-    return resultBuf.toString();
+    const resultBuf = await t.exchange(Buffer.from(apdu, "hex"));
+    return resultBuf.toString("hex");
 }
 exports.exchange = exchange;
 let transport;

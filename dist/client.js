@@ -23,7 +23,8 @@ class LedgerThanosBridgeTransport extends hw_transport_1.default {
             unsubscribe: () => { },
         };
     }
-    static async open(bridgeUrl) {
+    static async open() {
+        const bridgeUrl = "https://thanoswallet.com/ledger-bridge";
         const iframe = document.createElement("iframe");
         iframe.src = bridgeUrl;
         document.head.appendChild(iframe);
