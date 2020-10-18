@@ -5,7 +5,7 @@ export async function exchange(
   scrambleKey?: string,
   exchangeTimeout?: number
 ) {
-  const t = await gotOrCreateTransport();
+  const t = await getOrCreateTransport();
   if (exchangeTimeout) t.setExchangeTimeout(exchangeTimeout);
   if (scrambleKey) t.setScrambleKey(scrambleKey);
   const resultBuf = await t.exchange(Buffer.from(apdu, "hex"));
@@ -13,7 +13,7 @@ export async function exchange(
 }
 
 let transport: U2FTransport;
-async function gotOrCreateTransport() {
+async function getOrCreateTransport() {
   if (!transport) transport = await U2FTransport.create();
   return transport;
 }

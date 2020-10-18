@@ -5,7 +5,6 @@ const actions_1 = require("./actions");
 window.addEventListener("message", async (evt) => {
     try {
         const res = await handleRequest(evt.data);
-        console.info("IFRAME PROCESSES", res);
         if (!res)
             throw new Error("Not Found");
         reply(res);

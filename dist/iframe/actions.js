@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.exchange = void 0;
 const hw_transport_u2f_1 = __importDefault(require("@ledgerhq/hw-transport-u2f"));
 async function exchange(apdu, scrambleKey, exchangeTimeout) {
-    const t = await gotOrCreateTransport();
+    const t = await getOrCreateTransport();
     if (exchangeTimeout)
         t.setExchangeTimeout(exchangeTimeout);
     if (scrambleKey)
@@ -16,7 +16,7 @@ async function exchange(apdu, scrambleKey, exchangeTimeout) {
 }
 exports.exchange = exchange;
 let transport;
-async function gotOrCreateTransport() {
+async function getOrCreateTransport() {
     if (!transport)
         transport = await hw_transport_u2f_1.default.create();
     return transport;

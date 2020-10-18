@@ -22,40 +22,53 @@ export class LedgerThanosBridgeTransport extends Transport {
     };
   }
 
-  static async open() {
-    const bridgeUrl = "https://thanoswallet.com/ledger-bridge";
+  static async open(bridgeUrl: string) {
     const iframe = document.createElement("iframe");
     iframe.src = bridgeUrl;
     document.head.appendChild(iframe);
-    return new LedgerThanosBridgeTransport(iframe, bridgeUrl);
+    await new Promise((res) => {
+      const handleLoad = () => {
+        res();
+        iframe.removeEventListener("load", handleLoad);
+      };
+      iframe.addEventListener("load", handleLoad);
+    });
+    return new LedgerThanosBridgeTransport(iframe);
   }
 
   scrambleKey?: Buffer;
-  unwrap?: boolean;
 
-  constructor(private iframe: HTMLIFrameElement, private bridgeUrl: string) {
+  constructor(private iframe: HTMLIFrameElement) {
     super();
   }
 
+  get origin() {
+    const tmp = this.iframe.src.split("/");
+    tmp.splice(-1, 1);
+    return tmp.join("/");
+  }
+
   exchange(apdu: Buffer) {
-    return new Promise<Buffer>((resolve, reject) => {
+    return new Promise<Buffer>(async (resolve, reject) => {
+      const exchangeTimeout: number = (this as any).exchangeTimeout;
       const msg: BridgeExchangeRequest = {
         type: BridgeMessageType.ExchangeRequest,
-        apdu: apdu.toString(),
-        scrambleKey: this.scrambleKey?.toString(),
-        exchangeTimeout: (this as any).exchangeTimeout,
+        apdu: apdu.toString("hex"),
+        scrambleKey: this.scrambleKey?.toString("ascii"),
+        exchangeTimeout,
       };
+
       this.iframe.contentWindow?.postMessage(msg, "*");
 
       const handleMessage = (evt: MessageEvent) => {
-        if (evt.origin !== this.getOrigin()) {
+        if (evt.origin !== this.origin) {
           return;
         }
 
         const res: BridgeResponse = evt.data;
         switch (res?.type) {
           case BridgeMessageType.ExchangeResponse:
-            resolve(Buffer.from(res.result));
+            resolve(Buffer.from(res.result, "hex"));
             break;
 
           case BridgeMessageType.ErrorResponse:
@@ -74,17 +87,7 @@ export class LedgerThanosBridgeTransport extends Transport {
     this.scrambleKey = Buffer.from(scrambleKey, "ascii");
   }
 
-  setUnwrap(unwrap: boolean) {
-    this.unwrap = unwrap;
-  }
-
   async close() {
     document.head.removeChild(this.iframe);
-  }
-
-  private getOrigin() {
-    const tmp = this.bridgeUrl.split("/");
-    tmp.splice(-1, 1);
-    return tmp.join("/");
   }
 }
