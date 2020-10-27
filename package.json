@@ -4,7 +4,7 @@
     "name": "Madfish Solutions",
     "email": "info@madfish.solutions"
   },
-  "version": "0.1.0",
+  "version": "0.2.0",
   "source": "src/index.ts",
   "main": "dist/index.js",
   "module": "dist/index.module.js",
@@ -21,12 +21,12 @@
   },
   "homepage": "https://github.com/madfish-solutions/thanoswallet-ledger-bridge#readme",
   "scripts": {
+    "h": "parcel build --help",
     "dev": "microbundle watch",
     "build": "run-s build:*",
     "build:tsc": "tsc --module commonjs",
     "build:microbundle": "microbundle build --globals @ledgerhq/hw-transport=LedgerTransport",
-    "build:iframe-browserify": "browserify dist/iframe/main.js > dist/iframe/bundle.js",
-    "build:iframe-tinify": "terser --compress --mangle -o dist/iframe/bundle.js -- dist/iframe/bundle.js"
+    "build:iframe-browserify": "parcel build dist/iframe/main.js --dist-dir dist/iframe/bundle --target browser --no-source-maps"
   },
   "dependencies": {
     "@ledgerhq/hw-transport": "^5.26.0",
@@ -35,10 +35,16 @@
   "devDependencies": {
     "@ledgerhq/hw-transport-u2f": "^5.26.0",
     "@types/ledgerhq__hw-transport-u2f": "^4.21.2",
-    "browserify": "^17.0.0",
     "microbundle": "^0.12.4",
     "npm-run-all": "^4.1.5",
-    "terser": "^5.3.5",
+    "parcel": "^2.0.0-beta.1",
     "typescript": "^3.9.7"
+  },
+  "targets": {
+    "browser": {
+      "engines": {
+        "browsers": ["> 1%", "not dead"]
+      }
+    }
   }
 }

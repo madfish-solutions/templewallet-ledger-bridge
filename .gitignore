@@ -1,4 +1,5 @@
 /dist/
+/.parcel-cache/
 /node_modules/
 tsconfig.tsbuildinfo
 /.idea
