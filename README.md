@@ -4,7 +4,7 @@
 
 Below is a list of commands you will probably find useful.
 
-### npm run dev or yarn dev
+### npm start or yarn start
 
 Runs the project in development/watch mode. Your project will be rebuilt upon changes.
 

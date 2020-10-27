@@ -1,4 +1,2 @@
-/docs/
-/.parcel-cache/
+.parcel-cache
 tsconfig.json
-.babelrc

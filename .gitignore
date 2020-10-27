@@ -1,6 +1,5 @@
-/dist/
-/.parcel-cache/
-/node_modules/
-tsconfig.tsbuildinfo
-/.idea
+*.log
 .DS_Store
+node_modules
+.parcel-cache
+dist

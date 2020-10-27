@@ -42,12 +42,6 @@ export class LedgerThanosBridgeTransport extends Transport {
     super();
   }
 
-  get origin() {
-    const tmp = this.iframe.src.split("/");
-    tmp.splice(-1, 1);
-    return tmp.join("/");
-  }
-
   exchange(apdu: Buffer) {
     return new Promise<Buffer>(async (resolve, reject) => {
       const exchangeTimeout: number = (this as any).exchangeTimeout;
@@ -61,7 +55,7 @@ export class LedgerThanosBridgeTransport extends Transport {
       this.iframe.contentWindow?.postMessage(msg, "*");
 
       const handleMessage = (evt: MessageEvent) => {
-        if (evt.origin !== this.origin) {
+        if (evt.origin !== this.getOrigin()) {
           return;
         }
 
@@ -89,5 +83,11 @@ export class LedgerThanosBridgeTransport extends Transport {
 
   async close() {
     document.head.removeChild(this.iframe);
+  }
+
+  private getOrigin() {
+    const tmp = this.iframe.src.split("/");
+    tmp.splice(-1, 1);
+    return tmp.join("/");
   }
 }
