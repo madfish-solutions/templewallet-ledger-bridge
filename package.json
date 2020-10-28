@@ -31,6 +31,7 @@
     "build:iframe": "parcel build src/iframe/main.ts --dist-dir dist/iframe/bundle --target browser --no-source-maps"
   },
   "dependencies": {
+    "@ledgerhq/errors": "^5.26.0",
     "@ledgerhq/hw-transport": "^5.26.0",
     "@types/ledgerhq__hw-transport": "^4.21.3"
   },
@@ -54,7 +55,8 @@
           "> 1%",
           "not dead"
         ]
-      }
+      },
+      "includeNodeModules": true
     }
   }
 }

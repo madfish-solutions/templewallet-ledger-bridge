@@ -1,11 +1,12 @@
+import "regenerator-runtime/runtime";
+
 import { BridgeRequest, BridgeResponse, BridgeMessageType } from "../types";
 import { exchange } from "./actions";
 
 window.addEventListener("message", async (evt) => {
   try {
     const res = await handleRequest(evt.data);
-    if (!res) throw new Error("Not Found");
-    reply(res);
+    if (res) reply(res);
   } catch (err) {
     reply({
       type: BridgeMessageType.ErrorResponse,

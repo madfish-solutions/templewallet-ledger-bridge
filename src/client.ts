@@ -1,4 +1,5 @@
 import Transport from "@ledgerhq/hw-transport";
+import { TransportError } from "@ledgerhq/errors";
 import {
   BridgeExchangeRequest,
   BridgeMessageType,
@@ -26,13 +27,9 @@ export class LedgerThanosBridgeTransport extends Transport {
     const iframe = document.createElement("iframe");
     iframe.src = bridgeUrl;
     document.head.appendChild(iframe);
-    await new Promise((res) => {
-      const handleLoad = () => {
-        res();
-        iframe.removeEventListener("load", handleLoad);
-      };
-      iframe.addEventListener("load", handleLoad);
-    });
+    await new Promise((res) =>
+      iframe.addEventListener("load", res, { once: true })
+    );
     return new LedgerThanosBridgeTransport(iframe);
   }
 
@@ -66,8 +63,11 @@ export class LedgerThanosBridgeTransport extends Transport {
             break;
 
           case BridgeMessageType.ErrorResponse:
-            reject(res.message);
+            reject(new TransportError(res.message));
             break;
+
+          default:
+            return;
         }
 
         window.removeEventListener("message", handleMessage);
