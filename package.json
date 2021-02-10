@@ -1,8 +1,8 @@
 {
-  "name": "@thanos-wallet/ledger-bridge",
+  "name": "@temple-wallet/ledger-bridge",
   "version": "0.6.0",
   "main": "dist/index.js",
-  "module": "dist/thanoswallet-ledger-bridge.esm.js",
+  "module": "dist/templewallet-ledger-bridge.esm.js",
   "typings": "dist/index.d.ts",
   "files": [
     "dist",
@@ -58,5 +58,8 @@
       },
       "includeNodeModules": true
     }
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

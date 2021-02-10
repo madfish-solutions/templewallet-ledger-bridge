@@ -24,7 +24,7 @@ export interface BridgeMessageBase {
 }
 
 export enum BridgeMessageType {
-  ExchangeRequest = "THANOS_LEDGER_BRIDGE_EXCHANGE_REQUEST",
-  ExchangeResponse = "THANOS_LEDGER_BRIDGE_EXCHANGE_RESPONSE",
-  ErrorResponse = "THANOS_LEDGER_ERROR_RESPONSE",
+  ExchangeRequest = "TEMPLE_LEDGER_BRIDGE_EXCHANGE_REQUEST",
+  ExchangeResponse = "TEMPLE_LEDGER_BRIDGE_EXCHANGE_RESPONSE",
+  ErrorResponse = "TEMPLE_LEDGER_ERROR_RESPONSE",
 }
