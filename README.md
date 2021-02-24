@@ -1,4 +1,4 @@
-# ThanosWallet Ledger Bridge
+# TempleWallet Ledger Bridge
 
 ## Local Development
 

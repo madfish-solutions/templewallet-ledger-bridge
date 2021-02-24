@@ -6,7 +6,7 @@ import {
   BridgeResponse,
 } from "./types";
 
-export class LedgerThanosBridgeTransport extends Transport {
+export class LedgerTempleBridgeTransport extends Transport {
   static async isSupported() {
     return true;
   }
@@ -30,7 +30,7 @@ export class LedgerThanosBridgeTransport extends Transport {
     await new Promise((res) =>
       iframe.addEventListener("load", res, { once: true })
     );
-    return new LedgerThanosBridgeTransport(iframe);
+    return new LedgerTempleBridgeTransport(iframe);
   }
 
   scrambleKey?: Buffer;
