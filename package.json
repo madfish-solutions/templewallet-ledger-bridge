@@ -15,12 +15,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/madfish-solutions/thanoswallet-ledger-bridge.git"
+    "url": "git+https://github.com/madfish-solutions/templewallet-ledger-bridge.git"
   },
   "bugs": {
-    "url": "https://github.com/madfish-solutions/thanoswallet-ledger-bridge/issues"
+    "url": "https://github.com/madfish-solutions/templewallet-ledger-bridge/issues"
   },
-  "homepage": "https://github.com/madfish-solutions/thanoswallet-ledger-bridge#readme",
+  "homepage": "https://github.com/madfish-solutions/templewallet-ledger-bridge#readme",
   "scripts": {
     "start": "tsdx watch",
     "build": "run-s build:*",
