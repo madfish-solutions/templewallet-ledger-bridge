@@ -23,7 +23,8 @@ async function handleRequest(
       const result = await exchange(
         req.apdu,
         req.scrambleKey,
-        req.exchangeTimeout
+        req.exchangeTimeout,
+        req.useLedgerLive
       );
       return {
         type: BridgeMessageType.ExchangeResponse,

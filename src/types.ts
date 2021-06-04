@@ -7,6 +7,7 @@ export interface BridgeExchangeRequest extends BridgeMessageBase {
   apdu: string;
   scrambleKey?: string;
   exchangeTimeout?: number;
+  useLedgerLive?: boolean;
 }
 
 export interface BridgeExchangeResponse extends BridgeMessageBase {

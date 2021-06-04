@@ -34,6 +34,7 @@ export class LedgerTempleBridgeTransport extends Transport {
   }
 
   scrambleKey?: Buffer;
+  ledgerLiveUsed?: boolean;
 
   constructor(private iframe: HTMLIFrameElement) {
     super();
@@ -47,6 +48,7 @@ export class LedgerTempleBridgeTransport extends Transport {
         apdu: apdu.toString("hex"),
         scrambleKey: this.scrambleKey?.toString("ascii"),
         exchangeTimeout,
+        useLedgerLive: this.ledgerLiveUsed,
       };
 
       this.iframe.contentWindow?.postMessage(msg, "*");
@@ -75,6 +77,10 @@ export class LedgerTempleBridgeTransport extends Transport {
 
       window.addEventListener("message", handleMessage);
     });
+  }
+
+  useLedgerLive() {
+    this.ledgerLiveUsed = true;
   }
 
   setScrambleKey(scrambleKey: string) {
