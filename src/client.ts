@@ -3,8 +3,9 @@ import { TransportError } from "@ledgerhq/errors";
 import {
   BridgeExchangeRequest,
   BridgeMessageType,
-  BridgeResponse,
+  BridgeResponse
 } from "./types";
+import { TransportType } from ".";
 
 export class LedgerTempleBridgeTransport extends Transport {
   static async isSupported() {
@@ -19,7 +20,7 @@ export class LedgerTempleBridgeTransport extends Transport {
   // this transport is not discoverable
   static listen() {
     return {
-      unsubscribe: () => {},
+      unsubscribe: () => {}
     };
   }
 
@@ -27,17 +28,18 @@ export class LedgerTempleBridgeTransport extends Transport {
     const iframe = document.createElement("iframe");
     iframe.src = bridgeUrl;
     document.head.appendChild(iframe);
-    await new Promise((res) =>
+    await new Promise(res =>
       iframe.addEventListener("load", res, { once: true })
     );
     return new LedgerTempleBridgeTransport(iframe);
   }
 
   scrambleKey?: Buffer;
-  ledgerLiveUsed?: boolean;
+  transportType: TransportType;
 
   constructor(private iframe: HTMLIFrameElement) {
     super();
+    this.transportType = TransportType.U2F;
   }
 
   exchange(apdu: Buffer) {
@@ -48,7 +50,7 @@ export class LedgerTempleBridgeTransport extends Transport {
         apdu: apdu.toString("hex"),
         scrambleKey: this.scrambleKey?.toString("ascii"),
         exchangeTimeout,
-        useLedgerLive: this.ledgerLiveUsed,
+        transportType: this.transportType
       };
 
       this.iframe.contentWindow?.postMessage(msg, "*");
@@ -79,8 +81,8 @@ export class LedgerTempleBridgeTransport extends Transport {
     });
   }
 
-  useLedgerLive() {
-    this.ledgerLiveUsed = true;
+  updateTransportType(transportType: TransportType) {
+    this.transportType = transportType;
   }
 
   setScrambleKey(scrambleKey: string) {

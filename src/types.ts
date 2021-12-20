@@ -7,7 +7,7 @@ export interface BridgeExchangeRequest extends BridgeMessageBase {
   apdu: string;
   scrambleKey?: string;
   exchangeTimeout?: number;
-  useLedgerLive?: boolean;
+  transportType: TransportType;
 }
 
 export interface BridgeExchangeResponse extends BridgeMessageBase {
@@ -27,5 +27,11 @@ export interface BridgeMessageBase {
 export enum BridgeMessageType {
   ExchangeRequest = "TEMPLE_LEDGER_BRIDGE_EXCHANGE_REQUEST",
   ExchangeResponse = "TEMPLE_LEDGER_BRIDGE_EXCHANGE_RESPONSE",
-  ErrorResponse = "TEMPLE_LEDGER_ERROR_RESPONSE",
+  ErrorResponse = "TEMPLE_LEDGER_ERROR_RESPONSE"
+}
+
+export enum TransportType {
+  LEDGERLIVE = "ledgerLive",
+  U2F = "u2f",
+  WEBHID = "webihd"
 }

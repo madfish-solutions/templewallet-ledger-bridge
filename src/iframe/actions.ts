@@ -1,6 +1,8 @@
 import Transport from "@ledgerhq/hw-transport";
+import TransportWebHID from "@ledgerhq/hw-transport-webhid";
 import U2FTransport from "@ledgerhq/hw-transport-u2f";
 import WebSocketTransport from "@ledgerhq/hw-transport-http/lib/WebSocketTransport";
+import { TransportType } from "..";
 
 // URL which triggers Ledger Live app to open and handle communication
 const BRIDGE_URL = "ws://localhost:8435";
@@ -11,11 +13,11 @@ const TRANSPORT_CHECK_LIMIT = 120;
 
 export async function exchange(
   apdu: string,
+  transportType: TransportType,
   scrambleKey?: string,
-  exchangeTimeout?: number,
-  useLedgerLive?: boolean
+  exchangeTimeout?: number
 ) {
-  const t = await getOrCreateTransport(useLedgerLive);
+  const t = await getOrCreateTransport(transportType);
   if (exchangeTimeout) t.setExchangeTimeout(exchangeTimeout);
   if (scrambleKey) t.setScrambleKey(scrambleKey);
   const resultBuf = await t.exchange(Buffer.from(apdu, "hex"));
@@ -23,9 +25,9 @@ export async function exchange(
 }
 
 let transport: Transport;
-async function getOrCreateTransport(useLedgerLive?: boolean) {
+async function getOrCreateTransport(transportType: TransportType) {
   if (transport) {
-    if (useLedgerLive) {
+    if (transportType === TransportType.LEDGERLIVE) {
       try {
         await WebSocketTransport.check(BRIDGE_URL);
         return transport;
@@ -35,7 +37,7 @@ async function getOrCreateTransport(useLedgerLive?: boolean) {
     }
   }
 
-  if (useLedgerLive) {
+  if (transportType === TransportType.LEDGERLIVE) {
     try {
       await WebSocketTransport.check(BRIDGE_URL);
     } catch (_err) {
@@ -44,6 +46,8 @@ async function getOrCreateTransport(useLedgerLive?: boolean) {
     }
 
     transport = await WebSocketTransport.open(BRIDGE_URL);
+  } else if (transportType === TransportType.WEBHID) {
+    transport = await TransportWebHID.create();
   } else {
     transport = await U2FTransport.create();
   }
@@ -52,7 +56,7 @@ async function getOrCreateTransport(useLedgerLive?: boolean) {
 
 async function checkLedgerLiveTransport(i = 0) {
   return WebSocketTransport.check(BRIDGE_URL).catch(async () => {
-    await new Promise((r) => setTimeout(r, TRANSPORT_CHECK_DELAY));
+    await new Promise(r => setTimeout(r, TRANSPORT_CHECK_DELAY));
     if (i < TRANSPORT_CHECK_LIMIT) {
       return checkLedgerLiveTransport(i + 1);
     } else {
