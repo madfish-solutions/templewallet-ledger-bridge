@@ -2,7 +2,7 @@ import Transport from "@ledgerhq/hw-transport";
 import TransportWebHID from "@ledgerhq/hw-transport-webhid";
 import U2FTransport from "@ledgerhq/hw-transport-u2f";
 import WebSocketTransport from "@ledgerhq/hw-transport-http/lib/WebSocketTransport";
-import { TransportType } from "..";
+import { TransportType } from "../types";
 
 // URL which triggers Ledger Live app to open and handle communication
 const BRIDGE_URL = "ws://localhost:8435";

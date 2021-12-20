@@ -3,9 +3,9 @@ import { TransportError } from "@ledgerhq/errors";
 import {
   BridgeExchangeRequest,
   BridgeMessageType,
-  BridgeResponse
+  BridgeResponse,
+  TransportType
 } from "./types";
-import { TransportType } from ".";
 
 export class LedgerTempleBridgeTransport extends Transport {
   static async isSupported() {
@@ -27,6 +27,7 @@ export class LedgerTempleBridgeTransport extends Transport {
   static async open(bridgeUrl: string) {
     const iframe = document.createElement("iframe");
     iframe.src = bridgeUrl;
+    iframe.allow = `hid 'src'`;
     document.head.appendChild(iframe);
     await new Promise(res =>
       iframe.addEventListener("load", res, { once: true })
