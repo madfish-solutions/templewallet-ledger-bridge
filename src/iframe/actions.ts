@@ -24,8 +24,8 @@ export async function exchange(
   return resultBuf.toString("hex");
 }
 
-let transport: Transport;
-async function getOrCreateTransport(transportType: TransportType) {
+let transport: Transport | TransportWebHID;
+async function getOrCreateTransport(transportType: TransportType): Promise<Transport<string> | TransportWebHID> {
   if (transport) {
     if (transportType === TransportType.LEDGERLIVE) {
       try {
@@ -33,6 +33,16 @@ async function getOrCreateTransport(transportType: TransportType) {
         return transport;
       } catch (_err) {}
     } else {
+      if(transportType === TransportType.WEBHID && transport instanceof TransportWebHID) {
+        const device = transport && transport.device
+        const nameOfDeviceType = device && device.constructor.name
+        const deviceIsOpen = device && device.opened
+        if (nameOfDeviceType === 'HIDDevice' && deviceIsOpen) {
+          return transport;
+        }
+        const bufferTransport = await TransportWebHID.openConnected()
+        if(bufferTransport) transport = bufferTransport
+      }
       return transport;
     }
   }
