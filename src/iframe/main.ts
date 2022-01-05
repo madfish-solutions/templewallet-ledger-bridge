@@ -3,32 +3,33 @@ import "regenerator-runtime/runtime";
 import { BridgeRequest, BridgeResponse, BridgeMessageType } from "../types";
 import { exchange } from "./actions";
 
-window.addEventListener("message", async (evt) => {
+window.addEventListener("message", async evt => {
   try {
     const res = await handleRequest(evt.data);
     if (res) reply(res);
   } catch (err) {
-    reply({
-      type: BridgeMessageType.ErrorResponse,
-      message: err?.message ?? "Unexpected error",
-    });
+    if (err && err instanceof Error)
+      reply({
+        type: BridgeMessageType.ErrorResponse,
+        message: err.message ?? "Unexpected error"
+      });
   }
 });
 
 async function handleRequest(
   req: BridgeRequest
 ): Promise<BridgeResponse | void> {
-  switch (req?.type) {
+  switch (req.type) {
     case BridgeMessageType.ExchangeRequest:
       const result = await exchange(
         req.apdu,
+        req.transportType,
         req.scrambleKey,
-        req.exchangeTimeout,
-        req.useLedgerLive
+        req.exchangeTimeout
       );
       return {
         type: BridgeMessageType.ExchangeResponse,
-        result,
+        result
       };
   }
 }
